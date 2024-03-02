@@ -10,57 +10,27 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
 
-class MyRepository {
-
-    private val apiService: ApiService
-
+class MyRepository @JvmOverloads constructor(
+    private val apiService: ApiService = ApiService.getClient()
+) {
     interface MyCallBack {
         fun onSuccess(recipes: MyData)
         fun onFailure(errorMessage: String)
     }
 
-    init {
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor { chain ->
-
-                val original = chain.request()
-                val originalHttpUrl = original.url
-
-                val url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("apiKey", "enter_api_key_here")
-                    .build()
-
-                val requestBuilder = original.newBuilder()
-                    .url(url)
-
-                val request = requestBuilder.build()
-                chain.proceed(request)
-            }
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .build()
-
-        val builder: Retrofit = Retrofit.Builder()
-            .baseUrl("https://api.spoonacular.com/")
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        apiService =
-            builder.create(ApiService::class.java) // should i remove it from singleton or init?
-    }
-
-    fun getRecipes(callBack: MyCallBack) {
-        GlobalScope.launch {
+    suspend fun getRecipes(callBack: MyCallBack) {
+        try {
             val response = apiService.getRecipes("99")
-            try {
-                if (response.isSuccessful) {
-                    response.body()?.let { callBack.onSuccess(it) }
-                } else {
-                    callBack.onFailure("Is not successful: $response.message(), ${response.code()}")
+            if (response.isSuccessful) {
+                response.body()?.let { data ->
+                    callBack.onSuccess(data) } ?: run {
+                    callBack.onFailure("Empty Data!")
                 }
-            } catch (exception: Exception) {
-                callBack.onFailure("exception $exception.message.toString()")
+            } else {
+                callBack.onFailure(response.message())
             }
+        } catch (exception: Exception) {
+            callBack.onFailure(exception.message.toString())
         }
     }
 }

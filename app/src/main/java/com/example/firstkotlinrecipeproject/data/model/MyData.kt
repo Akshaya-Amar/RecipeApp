@@ -2,12 +2,11 @@ package com.example.firstkotlinrecipeproject.data.model
 
 import com.google.gson.annotations.SerializedName
 
-class MyData(
+data class MyData(
     @SerializedName("recipes")
-    val recipes: List<Recipe>
+    val recipes: List<Recipe>?
 )
 
-/*
 data class Recipe(
 
     @SerializedName("id")
@@ -15,4 +14,5 @@ data class Recipe(
 
     @SerializedName("title")
     val title: String?
-)*/
+)
+
