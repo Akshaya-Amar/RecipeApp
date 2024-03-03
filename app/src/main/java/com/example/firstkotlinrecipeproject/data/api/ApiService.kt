@@ -11,9 +11,6 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    /*@GET("recipes/random")
-    fun getRecipies(): Call<List<Recipe>>*/
-
     @GET("recipes/random")
     suspend fun getRecipes(
         @Query("number") number: String
@@ -40,9 +37,6 @@ interface ApiService {
             .build()
 
         fun getClient(): ApiService {
-
-// should I insert the interceptor code inside this function?
-
             return Retrofit.Builder()
                 .baseUrl("https://api.spoonacular.com/")
                 .addConverterFactory(GsonConverterFactory.create())

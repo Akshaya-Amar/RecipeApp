@@ -17,13 +17,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val viewModel: RecipeViewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
         val viewModel: RecipeViewModel by viewModels()
 
-        viewModel.recipe.observe(this) {
-            it.recipes?.forEach { recipe ->
+        viewModel.recipe.observe(this) { data ->
+            data.recipes?.forEach { recipe ->
                 Log.i("data...", "${recipe.id}, ${recipe.title}")
-                Snackbar.make(findViewById(R.id.constraint_layout), "$recipe.title", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    findViewById(R.id.constraint_layout),
+                    "$recipe.title",
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         }
     }
