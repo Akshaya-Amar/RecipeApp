@@ -2,6 +2,7 @@ package com.example.firstkotlinrecipeproject.data.api
 
 import com.example.firstkotlinrecipeproject.data.model.MyData
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -15,6 +16,9 @@ interface ApiService {
     suspend fun getRecipes(
         @Query("number") number: String
     ): Response<MyData>
+
+    @GET("recipes/random")
+    suspend fun getRecipes(): Response<MyData>
 
     companion object {
 
@@ -34,6 +38,7 @@ interface ApiService {
                 val request = requestBuilder.build()
                 chain.proceed(request)
             }
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
         fun getClient(): ApiService {

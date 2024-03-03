@@ -8,20 +8,43 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstkotlinrecipeproject.R
+import com.example.firstkotlinrecipeproject.databinding.ActivityMainBinding
+import com.example.firstkotlinrecipeproject.view.adapter.RecipeAdapter
 import com.example.firstkotlinrecipeproject.view.viewmodel.RecipeViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        val binding: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        // another way using generics
+        /*val binding1 =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)*/
 
         val viewModel: RecipeViewModel by viewModels()
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        val recipeAdapter = RecipeAdapter(this)
+        binding.recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = recipeAdapter
+        }
 
         viewModel.recipe.observe(this) { data ->
+
+            data.recipes?.let { list ->
+                recipeAdapter.setRecipeList(list)
+            }
+
             data.recipes?.forEach { recipe ->
-                Log.i("data...", "${recipe.id}, ${recipe.title}")
+                Log.i("data...", "${recipe.id}, ${recipe.title}, ${recipe.pricePerServing}")
                 Snackbar.make(
                     findViewById(R.id.constraint_layout),
                     "$recipe.title",

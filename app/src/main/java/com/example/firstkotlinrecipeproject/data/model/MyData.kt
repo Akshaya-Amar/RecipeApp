@@ -13,6 +13,21 @@ data class Recipe(
     val id: Int?,
 
     @SerializedName("title")
-    val title: String?
+    val title: String?,
+
+    @SerializedName("summary")
+    val summary: String?,
+
+    @SerializedName("image")
+    val imageUrl: String?,
+
+    @SerializedName("servings")
+    val servings: Int?,
+
+    @SerializedName("readyInMinutes")
+    val duration: Int?,
+
+    @SerializedName("pricePerServing")
+    val pricePerServing: Double?
 )
 
