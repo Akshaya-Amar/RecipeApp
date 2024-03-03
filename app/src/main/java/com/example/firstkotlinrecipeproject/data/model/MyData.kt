@@ -1,6 +1,7 @@
 package com.example.firstkotlinrecipeproject.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class MyData(
     @SerializedName("recipes")
@@ -18,6 +19,9 @@ data class Recipe(
     @SerializedName("summary")
     val summary: String?,
 
+    @SerializedName("instructions")
+    val instructions: String?,
+
     @SerializedName("image")
     val imageUrl: String?,
 
@@ -29,5 +33,5 @@ data class Recipe(
 
     @SerializedName("pricePerServing")
     val pricePerServing: Double?
-)
+) : Serializable
 

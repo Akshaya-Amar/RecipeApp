@@ -1,5 +1,6 @@
 package com.example.firstkotlinrecipeproject.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.firstkotlinrecipeproject.R
+import com.example.firstkotlinrecipeproject.data.model.Recipe
 import com.example.firstkotlinrecipeproject.databinding.ActivityMainBinding
 import com.example.firstkotlinrecipeproject.view.adapter.RecipeAdapter
 import com.example.firstkotlinrecipeproject.view.viewmodel.RecipeViewModel
@@ -30,6 +32,8 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        binding.shimmerEffect.startShimmer() // remove it
+
         val recipeAdapter = RecipeAdapter(this)
         binding.recyclerView.apply {
             setHasFixedSize(true)
@@ -37,20 +41,25 @@ class MainActivity : AppCompatActivity() {
             adapter = recipeAdapter
         }
 
-        viewModel.recipe.observe(this) { data ->
+        viewModel.recipeData.observe(this) { data ->
 
+            binding.shimmerEffect.stopShimmer()
             data.recipes?.let { list ->
                 recipeAdapter.setRecipeList(list)
             }
 
-            data.recipes?.forEach { recipe ->
+            /*data.recipes?.forEach { recipe ->
                 Log.i("data...", "${recipe.id}, ${recipe.title}, ${recipe.pricePerServing}")
-                Snackbar.make(
-                    findViewById(R.id.constraint_layout),
-                    "$recipe.title",
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
+            }*/
         }
+
+        recipeAdapter.setOnItemClickListener(object : RecipeAdapter.OnItemClickListener {
+            override fun onItemClicked(recipe: Recipe?) {
+                val intent = Intent(this@MainActivity, RecipeInfo::class.java)
+                intent.putExtra("recipe", recipe)
+                startActivity(intent)
+
+            }
+        })
     }
 }
