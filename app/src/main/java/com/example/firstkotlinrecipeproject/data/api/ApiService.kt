@@ -1,6 +1,7 @@
 package com.example.firstkotlinrecipeproject.data.api
 
 import com.example.firstkotlinrecipeproject.data.model.MyData
+import kotlinx.coroutines.sync.Mutex
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -41,13 +42,17 @@ interface ApiService {
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
+        private val client: ApiService = Retrofit.Builder()
+            .baseUrl("https://api.spoonacular.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(ApiService::class.java)
+
         fun getClient(): ApiService {
-            return Retrofit.Builder()
-                .baseUrl("https://api.spoonacular.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build()
-                .create(ApiService::class.java)
+            synchronized(Mutex()) {
+                return client
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ object BindingAdapters {
         val instruction =
             description?.let {
                 HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
-            }
+            } ?: ""
         textView.text = instruction
     }
 }

@@ -1,6 +1,7 @@
 package com.example.firstkotlinrecipeproject.view.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,8 +15,8 @@ class RecipeViewModel @JvmOverloads constructor(
     private val repo: MyRepository = MyRepository()
 ) : ViewModel() {
 
-    val recipeData = MutableLiveData<MyData>()
-    val similarRecipes = MutableLiveData<Recipe>()
+    private val _recipeData = MutableLiveData<MyData>()
+    val recipeData: LiveData<MyData> get() = _recipeData
 
     init {
         getRecipes()
@@ -25,7 +26,7 @@ class RecipeViewModel @JvmOverloads constructor(
         viewModelScope.launch(Dispatchers.IO) {
             repo.getRecipes(object : MyRepository.MyCallBack {
                 override fun onSuccess(recipes: MyData) {
-                    recipeData.postValue(recipes)
+                    _recipeData.postValue(recipes)
                 }
 
                 override fun onFailure(errorMessage: String) {

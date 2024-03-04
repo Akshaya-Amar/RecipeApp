@@ -29,8 +29,6 @@ class RecipeInfo : AppCompatActivity() {
         val recipe = intent.getSerializableExtra("recipe") as Recipe
         binding.recipe = recipe
 
-//        val viewModel: RecipeViewModel by viewModels()
-
         var isSummaryArrowUp = false
 
         binding.summaryArrow.setOnClickListener {
@@ -50,7 +48,7 @@ class RecipeInfo : AppCompatActivity() {
         var isInstructionArrowUp = false
 
         binding.instructionArrow.setOnClickListener {
-            if(!isInstructionArrowUp){
+            if (!isInstructionArrowUp) {
                 val drawable = ContextCompat.getDrawable(this, R.drawable.outline_arrow_drop_up)
                 binding.instructionArrow.setImageDrawable(drawable)
                 binding.instructionDescription.visibility = View.VISIBLE
@@ -62,12 +60,5 @@ class RecipeInfo : AppCompatActivity() {
                 isInstructionArrowUp = false
             }
         }
-
-        val instruction =
-            recipe.instructions?.let {
-                HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
-            }
-
-        Log.i("summary...", "onCreate: " + instruction)
     }
 }

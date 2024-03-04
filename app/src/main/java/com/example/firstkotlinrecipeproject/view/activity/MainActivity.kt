@@ -24,19 +24,21 @@ class MainActivity : AppCompatActivity() {
         val binding: ActivityMainBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        // another way using generics
-        /*val binding1 =
-            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)*/
-
         val viewModel: RecipeViewModel by viewModels()
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        binding.shimmerEffect.startShimmer() // remove it
+        binding.shimmerEffect.startShimmer()
 
-        val recipeAdapter = RecipeAdapter(this)
+        val recipeAdapter by lazy {
+            RecipeAdapter { recipe ->
+                val intent = Intent(this@MainActivity, RecipeInfo::class.java)
+                intent.putExtra("recipe", recipe)
+                startActivity(intent)
+            }
+        }
+
         binding.recyclerView.apply {
-            setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = recipeAdapter
         }
@@ -44,22 +46,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.recipeData.observe(this) { data ->
 
             binding.shimmerEffect.stopShimmer()
-            data.recipes?.let { list ->
-                recipeAdapter.setRecipeList(list)
-            }
+            recipeAdapter.submitList(data.recipes)
 
             /*data.recipes?.forEach { recipe ->
                 Log.i("data...", "${recipe.id}, ${recipe.title}, ${recipe.pricePerServing}")
             }*/
         }
-
-        recipeAdapter.setOnItemClickListener(object : RecipeAdapter.OnItemClickListener {
-            override fun onItemClicked(recipe: Recipe?) {
-                val intent = Intent(this@MainActivity, RecipeInfo::class.java)
-                intent.putExtra("recipe", recipe)
-                startActivity(intent)
-
-            }
-        })
     }
 }
