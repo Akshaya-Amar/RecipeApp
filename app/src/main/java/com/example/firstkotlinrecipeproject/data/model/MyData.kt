@@ -33,5 +33,20 @@ data class Recipe(
 
     @SerializedName("pricePerServing")
     val pricePerServing: Double?
-) : Serializable
+)
+
+data class SimilarRecipe(
+
+    @SerializedName("id")
+    val id: Int?,
+
+    @SerializedName("title")
+    val title: String?,
+
+    @SerializedName("servings")
+    val servings: Int?,
+
+    @SerializedName("readyInMinutes")
+    val duration: Int?
+)
 

@@ -1,9 +1,6 @@
-package com.example.firstkotlinrecipeproject.view.adapter
+package com.example.firstkotlinrecipeproject.ui.adapter
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil

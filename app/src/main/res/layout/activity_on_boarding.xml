@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.OnBoardingActivity">
+
+    <TextView
+        android:id="@+id/welcome_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/welcome_via_onboarding"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/welcome_text_view"
+        android:layout_margin="10dp"
+        android:hint="@string/enter_name" />
+
+    <Button
+        android:id="@+id/proceed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_edit_text"
+        android:layout_centerHorizontal="true"
+        android:text="@string/proceed" />
+</RelativeLayout>

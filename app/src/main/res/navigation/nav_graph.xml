@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/randomRecipeFragment">
+
+    <fragment
+        android:id="@+id/randomRecipeFragment"
+        android:name="com.example.firstkotlinrecipeproject.ui.fragment.RandomRecipeFragment"
+        android:label="fragment_random_recipe"
+        tools:layout="@layout/fragment_random_recipe" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_randomRecipeFragment_to_recipeInfoFragment"
+            app:destination="@id/recipeInfoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipeInfoFragment"
+        android:name="com.example.firstkotlinrecipeproject.ui.fragment.RecipeInfoFragment"
+        android:label="fragment_recipe_info"
+        tools:layout="@layout/fragment_recipe_info" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+</navigation>

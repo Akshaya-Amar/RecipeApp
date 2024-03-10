@@ -134,9 +134,9 @@
                 android:id="@+id/summary_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
                 android:layout_below="@id/first_card"
                 android:layout_margin="10dp"
+                app:cardCornerRadius="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:layout_editor_absoluteX="10dp">
 
@@ -173,15 +173,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/summary_layout"
-                        app:set_text="@{recipe.summary}"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:visibility="gone"
+                        app:set_text="@{recipe.summary}"
                         tools:text="Description" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/instruction_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/summary_card"
@@ -223,13 +224,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/instruction_layout"
-                        app:set_text="@{recipe.instructions}"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:visibility="gone"
+                        app:set_text="@{recipe.instructions}"
                         tools:text="Description" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/instruction_card"
+                tools:listitem="@layout/similar_recipe_item" />
         </RelativeLayout>
     </ScrollView>
 </layout>
