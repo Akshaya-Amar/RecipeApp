@@ -8,7 +8,11 @@ import com.example.firstkotlinrecipeproject.data.model.SimilarRecipe
 class MyRepository @JvmOverloads constructor(
     private val apiService: ApiService = ApiService.getClient()
 ) {
-    interface MyCallBack {
+    interface MyCallBack<T> {
+        fun onSuccess(data: T)
+        fun onFailure(errorMessage: String)
+    }
+    /*interface MyCallBack {
         fun onSuccess(recipes: MyData)
         fun onFailure(errorMessage: String)
     }
@@ -21,9 +25,9 @@ class MyRepository @JvmOverloads constructor(
     interface MyCallBack2 {
         fun onSuccess(recipeList: List<SimilarRecipe>)
         fun onFailure(errorMessage: String)
-    }
+    }*/
 
-    suspend fun getRecipes(callBack: MyCallBack) {
+    suspend fun getRecipes(callBack: MyCallBack<MyData>) {
         try {
 //            val response = apiService.getRecipes()
             val response = apiService.getRecipes("99")
@@ -41,12 +45,12 @@ class MyRepository @JvmOverloads constructor(
         }
     }
 
-    suspend fun getRecipeInfo(recipeId: Int, callBack: MyCallBack1) {
+    suspend fun getRecipeInfo(recipeId: Int, callBack: MyCallBack<Recipe>) {
         try {
             val response = apiService.getRecipeInfo(recipeId)
             if (response.isSuccessful) {
-                response.body()?.let {
-                    callBack.onSuccess(it)
+                response.body()?.let { recipe ->
+                    callBack.onSuccess(recipe)
                 } ?: run {
                     callBack.onFailure("Empty Data!")
                 }
@@ -60,12 +64,13 @@ class MyRepository @JvmOverloads constructor(
         }
     }
 
-    suspend fun getSimilarRecipes(recipeId: Int, callBack: MyCallBack2) {
+    suspend fun getSimilarRecipes(recipeId: Int, callBack: MyCallBack<List<SimilarRecipe>>) {
         try {
+//            val response = apiService.getSimilarRecipe()
             val response = apiService.getSimilarRecipe(recipeId)
             if (response.isSuccessful) {
-                response.body()?.let {
-                    callBack.onSuccess(it)
+                response.body()?.let { similarRecipeList ->
+                    callBack.onSuccess(similarRecipeList)
                 } ?: run {
                     callBack.onFailure("Empty Data!")
                 }

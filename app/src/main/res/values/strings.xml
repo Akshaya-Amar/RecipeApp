@@ -7,4 +7,6 @@
     <string name="welcome_via_onboarding">Welcome to Recipe App via onboarding</string>
     <string name="enter_name">Enter your name</string>
     <string name="proceed">Proceed</string>
+    <string name="welcome_to_recipe_app">Welcome to Recipe App</string>
+    <string name="hint_enter_your_name">Enter your name</string>
 </resources>

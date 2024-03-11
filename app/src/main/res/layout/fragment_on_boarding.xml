@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.OnBoardingFragment">
+    tools:context=".ui.activity.OnBoardingActivity">
 
     <TextView
         android:id="@+id/welcome_text_view"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="Welcome to Recipe App"
+        android:text="@string/welcome_to_recipe_app"
         android:textSize="24sp" />
 
     <EditText
@@ -20,7 +20,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/welcome_text_view"
         android:layout_margin="10dp"
-        android:hint="Enter your name" />
+        android:hint="@string/hint_enter_your_name"
+        android:inputType="textPersonName"
+        android:imeOptions="actionDone"
+        android:maxLines="1" />
 
     <Button
         android:id="@+id/proceed"

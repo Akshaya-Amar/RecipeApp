@@ -23,8 +23,9 @@ class OnBoardingActivity : AppCompatActivity() {
             if (name.isNotBlank()) {
                 lifecycleScope.launch {
                     MyApp.getDataStoreContext().saveFirstTimeValues(false, name)
+                    startSampleActivity()
                 }
-                startSampleActivity()
+
             } else {
                 Snackbar.make(binding.root, "Please enter a name", Snackbar.LENGTH_LONG)
                     .show()

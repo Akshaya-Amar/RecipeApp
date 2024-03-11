@@ -53,11 +53,6 @@ class RecipeInfoFragment : Fragment() {
 
         val similarRecipeAdapter by lazy {
             SimilarRecipeAdapter { similarRecipe ->
-                /*Toast.makeText(
-                    context,
-                    "${similarRecipe.id}, ${similarRecipe.title}",
-                    Toast.LENGTH_LONG
-                ).show()*/
                 Snackbar.make(binding.root, "${similarRecipe.title}", Snackbar.LENGTH_LONG).show()
                 binding.recyclerView.removeCallbacks(scrollToPosition)
             }
@@ -78,7 +73,6 @@ class RecipeInfoFragment : Fragment() {
 
         viewModel.getSimilarRecipes(recipeId)
         viewModel.similarRecipes.observe(viewLifecycleOwner) { similarRecipeList ->
-//            similarRecipeAdapter.setList(similarRecipeList)
             similarRecipeAdapter.submitList(similarRecipeList)
 
             var currentPosition = 0

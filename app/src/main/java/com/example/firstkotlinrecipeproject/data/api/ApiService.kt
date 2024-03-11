@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface ApiService {
 
@@ -32,6 +33,11 @@ interface ApiService {
 
     @GET("recipes/{id}/similar")
     suspend fun getSimilarRecipe(@Path("id") recipeId: Int): Response<List<SimilarRecipe>>
+
+    /*@GET("")
+    suspend fun getSimilarRecipe(
+        @Url url: String = "https://run.mocky.io/v3/53b66702-1a88-4119-8715-76f41e901b64"
+    ): Response<List<SimilarRecipe>>*/
 
     companion object {
 
