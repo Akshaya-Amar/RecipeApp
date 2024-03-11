@@ -13,6 +13,7 @@ object SampleSingleton {
 
     private var instance: SampleSingleton? = null
 
+
     fun getInstance(): SampleSingleton {
         if (instance == null) {
             instance = SampleSingleton

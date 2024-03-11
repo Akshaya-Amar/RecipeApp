@@ -18,14 +18,6 @@
 
         <activity
             android:name=".ui.activity.SplashScreen"
-            android:exported="true" />
-
-        <activity
-            android:name=".ui.activity.OnBoardingActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.activity.RecipeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,5 +25,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.activity.OnBoardingActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.RecipeActivity"
+            android:exported="false" />
     </application>
 </manifest>

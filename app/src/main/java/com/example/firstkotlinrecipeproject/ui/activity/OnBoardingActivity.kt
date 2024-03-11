@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.firstkotlinrecipeproject.MyApp
 import com.example.firstkotlinrecipeproject.databinding.ActivityOnBoardingBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 class OnBoardingActivity : AppCompatActivity() {
-
-//    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-//    private val FIRST_LAUNCH_KEY = booleanPreferencesKey("firstLaunch")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,11 +21,9 @@ class OnBoardingActivity : AppCompatActivity() {
         binding.proceed.setOnClickListener {
             val name = binding.nameEditText.text.toString()
             if (name.isNotBlank()) {
-                /*lifecycleScope.launch {
-                    dataStore.edit {
-                        it[FIRST_LAUNCH_KEY] = false
-                    }
-                }*/
+                lifecycleScope.launch {
+                    MyApp.getDataStoreContext().saveFirstTimeValues(false, name)
+                }
                 startSampleActivity()
             } else {
                 Snackbar.make(binding.root, "Please enter a name", Snackbar.LENGTH_LONG)
