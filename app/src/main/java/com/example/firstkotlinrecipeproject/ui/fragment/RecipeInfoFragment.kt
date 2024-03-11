@@ -1,7 +1,6 @@
 package com.example.firstkotlinrecipeproject.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
 import com.example.firstkotlinrecipeproject.R
-import com.example.firstkotlinrecipeproject.data.model.SimilarRecipe
 import com.example.firstkotlinrecipeproject.databinding.FragmentRecipeInfoBinding
 import com.example.firstkotlinrecipeproject.ui.adapter.SimilarRecipeAdapter
 import com.example.firstkotlinrecipeproject.ui.viewmodel.RecipeViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class RecipeInfoFragment : Fragment() {
 
@@ -52,26 +51,22 @@ class RecipeInfoFragment : Fragment() {
 
         val mLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
-        val similarRecipeAdapter = SimilarRecipeAdapter()
+        val similarRecipeAdapter by lazy {
+            SimilarRecipeAdapter { similarRecipe ->
+                /*Toast.makeText(
+                    context,
+                    "${similarRecipe.id}, ${similarRecipe.title}",
+                    Toast.LENGTH_LONG
+                ).show()*/
+                Snackbar.make(binding.root, "${similarRecipe.title}", Snackbar.LENGTH_LONG).show()
+                binding.recyclerView.removeCallbacks(scrollToPosition)
+            }
+        }
 
         val recyclerView = binding.recyclerView
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = mLayoutManager
         recyclerView.adapter = similarRecipeAdapter
-
-//        val snapHelper: SnapHelper = PagerSnapHelper()
-//        snapHelper.attachToRecyclerView(binding.recyclerView)
-        /*recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState == SCROLL_STATE_IDLE) {
-                    val centerView = snapHelper.findSnapView(mLayoutManager)
-                    val pos = mLayoutManager.getPosition(centerView!!)
-                    recyclerView.smoothScrollToPosition(pos)
-
-                }
-            }
-        })*/
 
         val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerView)
@@ -83,7 +78,8 @@ class RecipeInfoFragment : Fragment() {
 
         viewModel.getSimilarRecipes(recipeId)
         viewModel.similarRecipes.observe(viewLifecycleOwner) { similarRecipeList ->
-            similarRecipeAdapter.setList(similarRecipeList)
+//            similarRecipeAdapter.setList(similarRecipeList)
+            similarRecipeAdapter.submitList(similarRecipeList)
 
             var currentPosition = 0
 
@@ -103,13 +99,6 @@ class RecipeInfoFragment : Fragment() {
             }
 
             binding.recyclerView.postDelayed(scrollToPosition, 2000)
-
-            similarRecipeAdapter.setOnItemClickListner(object :
-                SimilarRecipeAdapter.OnClickListener {
-                override fun onItemClick(similarRecipe: SimilarRecipe) {
-                    binding.recyclerView.removeCallbacks(scrollToPosition)
-                }
-            })
 
             /*CoroutineScope(Dispatchers.Main).launch {
                 while (true) {
@@ -169,15 +158,6 @@ class RecipeInfoFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.i("ondestroy...before", "onDestroyView: $scrollToPosition")
-//        scrollToPosition = null
-        /*val isRemoved = binding.recyclerView.removeCallbacks(scrollToPosition)
-        if (isRemoved) {
-
-        }*/
         _binding = null
-        Log.i("ondestroy...after", "onDestroyView: $scrollToPosition")
-
-//        binding.recyclerView.removeCallbacks(scrollToPosition)
     }
 }
