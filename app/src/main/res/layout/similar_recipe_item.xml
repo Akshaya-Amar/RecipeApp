@@ -34,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
+                    app:load_image_using_id="@{similarRecipe.id}"
                     android:scaleType="fitXY"
                     android:src="@drawable/recipe_item" />
                 <!--                app:load_image="@{recipe.imageUrl}"-->

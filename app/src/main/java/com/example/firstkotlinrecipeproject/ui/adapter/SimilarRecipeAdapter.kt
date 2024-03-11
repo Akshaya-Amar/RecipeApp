@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.firstkotlinrecipeproject.R
 import com.example.firstkotlinrecipeproject.data.model.SimilarRecipe
 import com.example.firstkotlinrecipeproject.databinding.SimilarRecipeItemBinding

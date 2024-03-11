@@ -162,12 +162,22 @@ class RecipeInfoFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        binding.recyclerView.removeCallbacks(scrollToPosition)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         Log.i("ondestroy...before", "onDestroyView: $scrollToPosition")
-        binding.recyclerView.removeCallbacks(scrollToPosition)
-        Log.i("ondestroy...after", "onDestroyView: $scrollToPosition")
+//        scrollToPosition = null
+        /*val isRemoved = binding.recyclerView.removeCallbacks(scrollToPosition)
+        if (isRemoved) {
+
+        }*/
         _binding = null
+        Log.i("ondestroy...after", "onDestroyView: $scrollToPosition")
+
 //        binding.recyclerView.removeCallbacks(scrollToPosition)
     }
 }

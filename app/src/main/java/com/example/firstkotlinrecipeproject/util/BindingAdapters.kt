@@ -18,6 +18,16 @@ object BindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("app:load_image_using_id")
+    fun setImageUsingId(imageView: ImageView, id: Int?) {
+        id?.let {
+            Glide.with(imageView.context)
+                .load("https://spoonacular.com/recipeImages/$id-556x370.jpg")
+                .into(imageView)
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("app:set_text")
     fun setText(textView: TextView, description: String?) {
         val instruction =
