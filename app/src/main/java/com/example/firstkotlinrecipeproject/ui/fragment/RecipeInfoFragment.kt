@@ -1,6 +1,7 @@
 package com.example.firstkotlinrecipeproject.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
+import androidx.recyclerview.widget.RecyclerView.VISIBLE
 import androidx.recyclerview.widget.SnapHelper
 import com.example.firstkotlinrecipeproject.R
 import com.example.firstkotlinrecipeproject.databinding.FragmentRecipeInfoBinding
@@ -46,6 +51,9 @@ class RecipeInfoFragment : Fragment() {
 //        args.recipe.id?.let { viewModel.getRecipeInf(it) }
         viewModel.getRecipeInfo(recipeId)
         viewModel.recipeInfo.observe(viewLifecycleOwner) { recipe ->
+            binding.shimmerLayout.stopShimmer()
+            binding.shimmerLayout.visibility = View.GONE
+            binding.relativeLayout.visibility = View.VISIBLE
             binding.recipe = recipe
         }
 
@@ -58,11 +66,6 @@ class RecipeInfoFragment : Fragment() {
             }
         }
 
-        val recyclerView = binding.recyclerView
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = mLayoutManager
-        recyclerView.adapter = similarRecipeAdapter
-
         val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerView)
 
@@ -73,6 +76,7 @@ class RecipeInfoFragment : Fragment() {
 
         viewModel.getSimilarRecipes(recipeId)
         viewModel.similarRecipes.observe(viewLifecycleOwner) { similarRecipeList ->
+
             similarRecipeAdapter.submitList(similarRecipeList)
 
             var currentPosition = 0
@@ -94,6 +98,17 @@ class RecipeInfoFragment : Fragment() {
 
             binding.recyclerView.postDelayed(scrollToPosition, 2000)
 
+            val onScrollListener = object : OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    if (newState == SCROLL_STATE_DRAGGING) {
+                        binding.recyclerView.removeCallbacks(scrollToPosition)
+                        binding.recyclerView.removeOnScrollListener(this)
+                    }
+                }
+            }
+
+            binding.recyclerView.addOnScrollListener(onScrollListener)
+
             /*CoroutineScope(Dispatchers.Main).launch {
                 while (true) {
                     val currentPosition = (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
@@ -104,9 +119,22 @@ class RecipeInfoFragment : Fragment() {
             }*/
         }
 
+        binding.firstCard.setOnClickListener {
+            Snackbar.make(binding.root, "card clicked", Snackbar.LENGTH_LONG).show()
+        }
+
+        binding.summaryCard.setOnClickListener {
+            Snackbar.make(binding.root, "summary card clicked", Snackbar.LENGTH_LONG).show()
+        }
+
+        binding.instructionCard.setOnClickListener {
+            Snackbar.make(binding.root, "instruction card clicked", Snackbar.LENGTH_LONG).show()
+        }
+
         var isSummaryArrowUp = false
 
         binding.summaryArrow.setOnClickListener {
+            Log.i("summary arrow image....", "onViewCreated: ")
             if (!isSummaryArrowUp) {
                 val drawable = ContextCompat.getDrawable(
                     requireContext(),
@@ -129,6 +157,7 @@ class RecipeInfoFragment : Fragment() {
         var isInstructionArrowUp = false
 
         binding.instructionArrow.setOnClickListener {
+            Log.i("instruction arrow image....", "onViewCreated: ")
             if (!isInstructionArrowUp) {
                 val drawable =
                     ContextCompat.getDrawable(requireContext(), R.drawable.outline_arrow_drop_up)

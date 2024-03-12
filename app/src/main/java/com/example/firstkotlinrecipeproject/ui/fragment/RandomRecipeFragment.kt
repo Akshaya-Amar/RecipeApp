@@ -13,6 +13,8 @@ import com.example.firstkotlinrecipeproject.R
 import com.example.firstkotlinrecipeproject.databinding.FragmentRandomRecipeBinding
 import com.example.firstkotlinrecipeproject.ui.adapter.RecipeAdapter
 import com.example.firstkotlinrecipeproject.ui.viewmodel.RecipeViewModel
+import com.example.firstkotlinrecipeproject.util.Response
+import com.google.android.material.snackbar.Snackbar
 
 class RandomRecipeFragment : Fragment() {
 
@@ -62,8 +64,26 @@ class RandomRecipeFragment : Fragment() {
             adapter = recipeAdapter
         }
 
-        viewModel.recipeData.observe(viewLifecycleOwner) { data ->
-            recipeAdapter.submitList(data.recipes)
+        viewModel.recipeData.observe(viewLifecycleOwner) { resp ->
+            when (resp) {
+                is Response.Error -> {
+                    binding.shimmerLayout.stopShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+                    Snackbar.make(binding.root, resp.message.toString(), Snackbar.LENGTH_LONG)
+                        .show()
+                }
+
+                is Response.Loading -> {
+
+                }
+
+                is Response.Success -> {
+                    binding.shimmerLayout.stopShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+                    recipeAdapter.submitList(resp.data)
+                }
+            }
+
         }
     }
 

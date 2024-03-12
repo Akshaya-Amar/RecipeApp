@@ -4,6 +4,7 @@ import com.example.firstkotlinrecipeproject.data.api.ApiService
 import com.example.firstkotlinrecipeproject.data.model.MyData
 import com.example.firstkotlinrecipeproject.data.model.Recipe
 import com.example.firstkotlinrecipeproject.data.model.SimilarRecipe
+import com.example.firstkotlinrecipeproject.util.Response
 
 class MyRepository @JvmOverloads constructor(
     private val apiService: ApiService = ApiService.getClient()
@@ -27,21 +28,26 @@ class MyRepository @JvmOverloads constructor(
         fun onFailure(errorMessage: String)
     }*/
 
-    suspend fun getRecipes(callBack: MyCallBack<MyData>) {
+    suspend fun getRecipes(): Response<List<Recipe>> {
         try {
 //            val response = apiService.getRecipes()
             val response = apiService.getRecipes("99")
             if (response.isSuccessful) {
                 response.body()?.let { data ->
-                    callBack.onSuccess(data)
+                    if (data.recipes.isNullOrEmpty().not()) {
+                        return Response.Success(data = data.recipes!!)
+                    } else {
+                        return Response.Error(message = "Empty Data")
+                    }
+
                 } ?: run {
-                    callBack.onFailure("Empty Data!")
+                    return Response.Error(message = "Empty Data")
                 }
             } else {
-                callBack.onFailure(response.message())
+                return Response.Error(message = response.message())
             }
         } catch (exception: Exception) {
-            callBack.onFailure(exception.message.toString())
+            return Response.Error(message = exception.message)
         }
     }
 

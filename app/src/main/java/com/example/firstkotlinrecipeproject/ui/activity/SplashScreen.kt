@@ -23,8 +23,10 @@ class SplashScreen : AppCompatActivity() {
 
             if (MyApp.getDataStoreContext().isFirstTime.first()) {
                 startActivity(OnBoardingActivity.getIntent(this@SplashScreen))
+                finish()
             } else {
                 startActivity(RecipeActivity.getIntent(this@SplashScreen))
+                finish()
             }
         }
     }

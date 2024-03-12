@@ -48,7 +48,7 @@ interface ApiService {
                 val originalHttpUrl = original.url
 
                 val url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("apiKey", "fcff114beab647c88ae6e748795150c6")
+                    .addQueryParameter("apiKey", "add_your_api_key_here")
                     .build()
 
                 val requestBuilder = original.newBuilder()

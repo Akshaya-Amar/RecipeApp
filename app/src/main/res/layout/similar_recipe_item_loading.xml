@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <variable
-            name="recipe"
-            type="com.example.firstkotlinrecipeproject.data.model.Recipe" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:cardElevation="5dp"
@@ -33,40 +25,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/recipe_item"
-                    app:load_image="@{recipe.imageUrl}" />
+                    android:background="@color/shimmer_color" />
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="5"
-                        android:text="@{recipe.title}"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        tools:text="Curry and Sage Roast Chicken" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:layout_weight="2"
-                        android:gravity="end"
-                        android:maxLines="1"
-                        android:text="@{`₹ `+ String.valueOf(recipe.pricePerServing)}"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        tools:text="₹ 1234.342" />
-                </LinearLayout>
+                    android:layout_margin="10dp"
+                    android:background="@color/shimmer_color"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -84,42 +52,38 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginEnd="5dp"
-                            android:src="@drawable/baseline_duration" />
+                            android:background="@color/shimmer_color" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toEndOf="@+id/duration_image"
-                            android:maxLines="1"
-                            android:text="@{String.valueOf(recipe.duration) + ` mins`}"
-                            tools:text="10 mins" />
+                            android:background="@color/shimmer_color" />
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end">
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1">
 
                         <ImageView
                             android:id="@+id/serving_image"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginEnd="5dp"
-                            android:src="@drawable/outline_serving" />
+                            android:background="@color/shimmer_color" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toEndOf="@+id/serving_image"
-                            android:maxLines="1"
-                            android:text="@{String.valueOf(recipe.servings) +` servings`}"
-                            tools:text="1 Serving" />
+                            android:background="@color/shimmer_color" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>
