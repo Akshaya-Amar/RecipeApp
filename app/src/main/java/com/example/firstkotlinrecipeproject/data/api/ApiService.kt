@@ -26,18 +26,28 @@ interface ApiService {
     @GET("recipes/random")
     suspend fun getRecipes(): Response<MyData>
 
+    @GET("")
+    suspend fun getMockRecipes(
+        @Url url: String = "https://run.mocky.io/v3/6856144b-dc10-403c-9636-2c4c58cab7891"
+    ): Response<MyData>
+
     @GET("recipes/{id}/information")
     suspend fun getRecipeInfo(
         @Path("id") recipeId: Int
     ): Response<Recipe>
 
+    @GET("")
+    suspend fun getMockRecipeInfo(
+        @Url url: String = "https://run.mocky.io/v3/f1ac76ce-ad44-4b53-9002-68e6f7f77730"
+    ): Response<Recipe>
+
     @GET("recipes/{id}/similar")
     suspend fun getSimilarRecipe(@Path("id") recipeId: Int): Response<List<SimilarRecipe>>
 
-    /*@GET("")
-    suspend fun getSimilarRecipe(
+    @GET("")
+    suspend fun getMockSimilarRecipe(
         @Url url: String = "https://run.mocky.io/v3/53b66702-1a88-4119-8715-76f41e901b64"
-    ): Response<List<SimilarRecipe>>*/
+    ): Response<List<SimilarRecipe>>
 
     companion object {
 
@@ -48,7 +58,7 @@ interface ApiService {
                 val originalHttpUrl = original.url
 
                 val url = originalHttpUrl.newBuilder()
-                    .addQueryParameter("apiKey", "add_your_api_key_here")
+                    .addQueryParameter("apiKey", "fcff114beab647c88ae6e748795150c6")
                     .build()
 
                 val requestBuilder = original.newBuilder()

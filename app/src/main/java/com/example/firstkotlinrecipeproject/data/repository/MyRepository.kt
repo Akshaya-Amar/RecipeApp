@@ -1,10 +1,11 @@
 package com.example.firstkotlinrecipeproject.data.repository
 
 import com.example.firstkotlinrecipeproject.data.api.ApiService
-import com.example.firstkotlinrecipeproject.data.model.MyData
 import com.example.firstkotlinrecipeproject.data.model.Recipe
 import com.example.firstkotlinrecipeproject.data.model.SimilarRecipe
 import com.example.firstkotlinrecipeproject.util.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MyRepository @JvmOverloads constructor(
     private val apiService: ApiService = ApiService.getClient()
@@ -28,32 +29,32 @@ class MyRepository @JvmOverloads constructor(
         fun onFailure(errorMessage: String)
     }*/
 
-    suspend fun getRecipes(): Response<List<Recipe>> {
+    suspend fun getRecipes(): Response<List<Recipe>> = withContext(Dispatchers.IO) {
         try {
-//            val response = apiService.getRecipes()
-            val response = apiService.getRecipes("99")
+            val response = apiService.getMockRecipes()
+//            val response = apiService.getRecipes("99")
             if (response.isSuccessful) {
                 response.body()?.let { data ->
                     if (data.recipes.isNullOrEmpty().not()) {
-                        return Response.Success(data = data.recipes!!)
+                        return@withContext Response.Success(data = data.recipes!!)
                     } else {
-                        return Response.Error(message = "Empty Data")
+                        return@withContext Response.Error(message = "Empty Data")
                     }
-
                 } ?: run {
-                    return Response.Error(message = "Empty Data")
+                    return@withContext Response.Error(message = "Empty Data")
                 }
             } else {
-                return Response.Error(message = response.message())
+                return@withContext Response.Error(message = response.message())
             }
         } catch (exception: Exception) {
-            return Response.Error(message = exception.message)
+            return@withContext Response.Error(message = exception.message)
         }
     }
 
     suspend fun getRecipeInfo(recipeId: Int, callBack: MyCallBack<Recipe>) {
         try {
-            val response = apiService.getRecipeInfo(recipeId)
+            val response = apiService.getMockRecipeInfo()
+//            val response = apiService.getRecipeInfo(recipeId)
             if (response.isSuccessful) {
                 response.body()?.let { recipe ->
                     callBack.onSuccess(recipe)
@@ -72,8 +73,8 @@ class MyRepository @JvmOverloads constructor(
 
     suspend fun getSimilarRecipes(recipeId: Int, callBack: MyCallBack<List<SimilarRecipe>>) {
         try {
-//            val response = apiService.getSimilarRecipe()
-            val response = apiService.getSimilarRecipe(recipeId)
+            val response = apiService.getMockSimilarRecipe()
+//            val response = apiService.getSimilarRecipe(recipeId)
             if (response.isSuccessful) {
                 response.body()?.let { similarRecipeList ->
                     callBack.onSuccess(similarRecipeList)

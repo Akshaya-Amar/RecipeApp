@@ -1,11 +1,10 @@
 package com.example.firstkotlinrecipeproject.data.model
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 data class MyData(
     @SerializedName("recipes")
-    val recipes: List<Recipe>?
+    val recipes: List<Recipe>? = null,
 )
 
 data class Recipe(

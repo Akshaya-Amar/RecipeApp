@@ -31,6 +31,7 @@
 
         <activity
             android:name=".ui.activity.RecipeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/FullScreen" />
     </application>
 </manifest>

@@ -12,6 +12,7 @@ import com.example.firstkotlinrecipeproject.data.model.SimilarRecipe
 import com.example.firstkotlinrecipeproject.data.repository.MyRepository
 import com.example.firstkotlinrecipeproject.util.Response
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -33,14 +34,17 @@ class RecipeViewModel @JvmOverloads constructor(
         getRecipes()
         viewModelScope.launch {
             MyApp.getDataStoreContext().name.collectLatest { username ->
-                _userName.postValue("Welcome, \n$username")
+                _userName.postValue("Welcome, \n $username")
             }
         }
     }
 
-    private fun getRecipes() {
+    fun getRecipes() {
         viewModelScope.launch(Dispatchers.IO) {
-            _recipeData.postValue(repo.getRecipes())
+            val resp = repo.getRecipes()
+            _recipeData.postValue(Response.Loading())
+            delay(500)
+            _recipeData.postValue(resp)
         }
     }
 

@@ -70,11 +70,15 @@ class RandomRecipeFragment : Fragment() {
                     binding.shimmerLayout.stopShimmer()
                     binding.shimmerLayout.visibility = View.GONE
                     Snackbar.make(binding.root, resp.message.toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Retry") {
+                            viewModel.getRecipes()
+                        }
                         .show()
                 }
 
                 is Response.Loading -> {
-
+                    binding.shimmerLayout.visibility = View.VISIBLE
+                    binding.shimmerLayout.startShimmer()
                 }
 
                 is Response.Success -> {
@@ -83,7 +87,6 @@ class RandomRecipeFragment : Fragment() {
                     recipeAdapter.submitList(resp.data)
                 }
             }
-
         }
     }
 
