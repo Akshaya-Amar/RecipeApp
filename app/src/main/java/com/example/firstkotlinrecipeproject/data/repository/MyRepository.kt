@@ -10,10 +10,10 @@ import kotlinx.coroutines.withContext
 class MyRepository @JvmOverloads constructor(
     private val apiService: ApiService = ApiService.getClient()
 ) {
-    interface MyCallBack<T> {
+    /*interface MyCallBack<T> {
         fun onSuccess(data: T)
         fun onFailure(errorMessage: String)
-    }
+    }*/
     /*interface MyCallBack {
         fun onSuccess(recipes: MyData)
         fun onFailure(errorMessage: String)
@@ -51,41 +51,39 @@ class MyRepository @JvmOverloads constructor(
         }
     }
 
-    suspend fun getRecipeInfo(recipeId: Int, callBack: MyCallBack<Recipe>) {
+    suspend fun getRecipeInfo(recipeId: Int): Response<Recipe> {
         try {
             val response = apiService.getMockRecipeInfo()
 //            val response = apiService.getRecipeInfo(recipeId)
             if (response.isSuccessful) {
                 response.body()?.let { recipe ->
-                    callBack.onSuccess(recipe)
+                    return Response.Success(data = recipe)
                 } ?: run {
-                    callBack.onFailure("Empty Data!")
+                    return Response.Error(message = "Empty Data")
                 }
             } else {
-                callBack.onFailure(response.message())
+                return Response.Error(message = response.message())
             }
         } catch (exception: Exception) {
-            callBack.onFailure(
-                exception.message.toString()
-            )
+            return Response.Error(message = exception.message)
         }
     }
 
-    suspend fun getSimilarRecipes(recipeId: Int, callBack: MyCallBack<List<SimilarRecipe>>) {
+    suspend fun getSimilarRecipes(recipeId: Int): Response<List<SimilarRecipe>> {
         try {
             val response = apiService.getMockSimilarRecipe()
 //            val response = apiService.getSimilarRecipe(recipeId)
             if (response.isSuccessful) {
                 response.body()?.let { similarRecipeList ->
-                    callBack.onSuccess(similarRecipeList)
+                    return Response.Success(data = similarRecipeList)
                 } ?: run {
-                    callBack.onFailure("Empty Data!")
+                    return Response.Error(message = "Empty Data")
                 }
             } else {
-                callBack.onFailure(response.message())
+                return Response.Error(message = response.message())
             }
         } catch (exception: Exception) {
-            callBack.onFailure(exception.message.toString())
+            return Response.Error(message = exception.message.toString())
         }
     }
 }

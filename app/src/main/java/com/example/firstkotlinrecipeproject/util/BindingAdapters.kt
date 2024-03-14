@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.example.firstkotlinrecipeproject.R
 
 object BindingAdapters {
     @JvmStatic
@@ -13,6 +14,7 @@ object BindingAdapters {
         imageUrl?.let { url ->
             Glide.with(imageView.context)
                 .load(url)
+                .placeholder(R.drawable.default_recipe_image)
                 .into(imageView)
         }
     }
@@ -23,6 +25,7 @@ object BindingAdapters {
         id?.let {
             Glide.with(imageView.context)
                 .load("https://spoonacular.com/recipeImages/$id-556x370.jpg")
+                .placeholder(R.drawable.default_recipe_image)
                 .into(imageView)
         }
     }

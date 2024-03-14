@@ -28,7 +28,7 @@ interface ApiService {
 
     @GET("")
     suspend fun getMockRecipes(
-        @Url url: String = "https://run.mocky.io/v3/6856144b-dc10-403c-9636-2c4c58cab7891"
+        @Url url: String = "https://run.mocky.io/v3/6856144b-dc10-403c-9636-2c4c58cab789"
     ): Response<MyData>
 
     @GET("recipes/{id}/information")
