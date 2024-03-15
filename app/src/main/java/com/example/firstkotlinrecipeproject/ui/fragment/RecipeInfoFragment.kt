@@ -121,8 +121,8 @@ class RecipeInfoFragment : Fragment() {
         with(binding) {
             when (response) {
                 is Response.Loading -> {
-                    binding.shimmerLayout.visibility = View.VISIBLE
-                    binding.shimmerLayout.startShimmer()
+                    shimmerLayout.visibility = View.VISIBLE
+                    shimmerLayout.startShimmer()
                 }
 
                 is Response.Success -> {
@@ -133,7 +133,6 @@ class RecipeInfoFragment : Fragment() {
 
                     scrollToPosition = object : Runnable {
                         override fun run() {
-
                             val nextPosition =
                                 if (currentPosition < similarRecipeAdapter.itemCount - 1) currentPosition + 1 else 0
 
@@ -152,18 +151,18 @@ class RecipeInfoFragment : Fragment() {
                             newState: Int
                         ) {
                             if (newState == SCROLL_STATE_DRAGGING) {
-                                binding.recyclerView.removeCallbacks(scrollToPosition)
-                                binding.recyclerView.removeOnScrollListener(this)
+                                recyclerView.removeCallbacks(scrollToPosition)
+                                recyclerView.removeOnScrollListener(this)
                             }
                         }
                     }
 
-                    binding.recyclerView.addOnScrollListener(onScrollListener)
+                    recyclerView.addOnScrollListener(onScrollListener)
                 }
 
                 is Response.Error -> {
-                    binding.shimmerLayout.visibility = View.GONE
-                    binding.shimmerLayout.stopShimmer()
+                    shimmerLayout.visibility = View.GONE
+                    shimmerLayout.stopShimmer()
                     Snackbar.make(binding.root, response.message.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Retry") {
                             viewModel.getSimilarRecipes(args.id)
