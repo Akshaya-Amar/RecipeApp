@@ -23,7 +23,8 @@ class OnBoardingActivity : AppCompatActivity() {
             if (name.isNotBlank()) {
                 lifecycleScope.launch {
                     MyApp.getDataStoreContext().saveFirstTimeValues(false, name)
-                    startSampleActivity()
+                    startActivity(RecipeActivity.getIntent(this@OnBoardingActivity))
+                    finish()
                 }
 
             } else {
@@ -31,12 +32,6 @@ class OnBoardingActivity : AppCompatActivity() {
                     .show()
             }
         }
-    }
-
-    private fun startSampleActivity() {
-        val intent = Intent(this@OnBoardingActivity, RecipeActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
     companion object {

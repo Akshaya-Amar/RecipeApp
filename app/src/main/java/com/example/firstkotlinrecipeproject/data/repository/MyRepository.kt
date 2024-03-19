@@ -10,29 +10,10 @@ import kotlinx.coroutines.withContext
 class MyRepository @JvmOverloads constructor(
     private val apiService: ApiService = ApiService.getClient()
 ) {
-    /*interface MyCallBack<T> {
-        fun onSuccess(data: T)
-        fun onFailure(errorMessage: String)
-    }*/
-    /*interface MyCallBack {
-        fun onSuccess(recipes: MyData)
-        fun onFailure(errorMessage: String)
-    }
-
-    interface MyCallBack1 {
-        fun onSuccess(recipe: Recipe)
-        fun onFailure(errorMessage: String)
-    }
-
-    interface MyCallBack2 {
-        fun onSuccess(recipeList: List<SimilarRecipe>)
-        fun onFailure(errorMessage: String)
-    }*/
-
     suspend fun getRecipes(): Response<List<Recipe>> = withContext(Dispatchers.IO) {
         try {
-            val response = apiService.getMockRecipes()
-//            val response = apiService.getRecipes("99")
+//            val response = apiService.getMockRecipes()
+            val response = apiService.getRecipes("99")
             if (response.isSuccessful) {
                 response.body()?.let { data ->
                     if (data.recipes.isNullOrEmpty().not()) {
@@ -53,8 +34,8 @@ class MyRepository @JvmOverloads constructor(
 
     suspend fun getRecipeInfo(recipeId: Int): Response<Recipe> {
         try {
-            val response = apiService.getMockRecipeInfo()
-//            val response = apiService.getRecipeInfo(recipeId)
+//            val response = apiService.getMockRecipeInfo()
+            val response = apiService.getRecipeInfo(recipeId)
             if (response.isSuccessful) {
                 response.body()?.let { recipe ->
                     return Response.Success(data = recipe)
@@ -71,8 +52,8 @@ class MyRepository @JvmOverloads constructor(
 
     suspend fun getSimilarRecipes(recipeId: Int): Response<List<SimilarRecipe>> {
         try {
-            val response = apiService.getMockSimilarRecipe()
-//            val response = apiService.getSimilarRecipe(recipeId)
+//            val response = apiService.getMockSimilarRecipe()
+            val response = apiService.getSimilarRecipe(recipeId)
             if (response.isSuccessful) {
                 response.body()?.let { similarRecipeList ->
                     return Response.Success(data = similarRecipeList)

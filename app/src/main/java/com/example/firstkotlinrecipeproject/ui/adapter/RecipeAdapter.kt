@@ -12,7 +12,7 @@ import com.example.firstkotlinrecipeproject.databinding.RecipeItemBinding
 
 class RecipeAdapter(
     private val onClick: (Recipe) -> Unit
-) : ListAdapter<Recipe, RecipeAdapter.ViewHolder>(COMPARATOR) {
+) : ListAdapter<Recipe, RecipeViewHolder>(COMPARATOR) {
     companion object {
         val COMPARATOR = object : DiffUtil.ItemCallback<Recipe>() {
             override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
@@ -32,29 +32,33 @@ class RecipeAdapter(
         }
     */
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<RecipeItemBinding>(
             inflater,
-            R.layout.recipe_item, parent,
+            R.layout.recipe_item,
+            parent,
             false
         )
-        return ViewHolder(binding)
+        return RecipeViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val recipe = getItem(position)
-        holder.binding.recipe = recipe
+    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+        holder.binding.recipe = getItem(position)
         holder.binding.executePendingBindings()
+        holder.bind(onClick = onClick)
     }
+}
 
-    inner class ViewHolder(val binding: RecipeItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.root.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    if (binding.recipe != null)
-                        onClick.invoke(binding.recipe!!)
+class RecipeViewHolder(val binding: RecipeItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(onClick: (Recipe) -> Unit) {
+        binding.root.setOnClickListener {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                if (binding.recipe != null) {
+                    onClick.invoke(binding.recipe!!)
                 }
             }
         }

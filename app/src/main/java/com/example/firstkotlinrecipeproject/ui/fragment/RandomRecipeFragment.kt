@@ -22,6 +22,18 @@ class RandomRecipeFragment : Fragment() {
     private var _binding: FragmentRandomRecipeBinding? = null
     private val binding get() = _binding!!
 
+    private val recipeAdapter by lazy {
+        RecipeAdapter { recipe ->
+            if (recipe.id != null) {
+                val action =
+                    RandomRecipeFragmentDirections.actionRandomRecipeFragmentToRecipeInfoFragment(
+                        recipe.id
+                    )
+                findNavController().navigate(action)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,35 +49,18 @@ class RandomRecipeFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        /*= RecipeAdapter { recipe ->
-            if (recipe.id != null) {
-                val action =
-                    RandomRecipeFragmentDirections.actionRandomRecipeFragmentToRecipeInfoFragment(
-                        recipe.id
-                    )
-                findNavController().navigate(action)
-            }
-        }*/
-
-        val recipeAdapter by lazy {
-            RecipeAdapter { recipe ->
-                if (recipe.id != null) {
-                    val action =
-                        RandomRecipeFragmentDirections.actionRandomRecipeFragmentToRecipeInfoFragment(
-                            recipe.id
-                        )
-                    findNavController().navigate(action)
-                }
-            }
-        }
-
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = recipeAdapter
         }
 
         viewModel.recipeData.observe(viewLifecycleOwner) { resp ->
             when (resp) {
+                is Response.Loading -> {
+                    binding.shimmerLayout.visibility = View.VISIBLE
+                    binding.shimmerLayout.startShimmer()
+                }
+
                 is Response.Error -> {
                     binding.shimmerLayout.stopShimmer()
                     binding.shimmerLayout.visibility = View.GONE
@@ -76,15 +71,10 @@ class RandomRecipeFragment : Fragment() {
                         .show()
                 }
 
-                is Response.Loading -> {
-                    binding.shimmerLayout.visibility = View.VISIBLE
-                    binding.shimmerLayout.startShimmer()
-                }
-
                 is Response.Success -> {
+                    recipeAdapter.submitList(resp.data)
                     binding.shimmerLayout.stopShimmer()
                     binding.shimmerLayout.visibility = View.GONE
-                    recipeAdapter.submitList(resp.data)
                 }
             }
         }

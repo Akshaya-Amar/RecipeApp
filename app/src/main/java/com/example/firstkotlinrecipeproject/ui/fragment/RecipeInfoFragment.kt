@@ -34,10 +34,15 @@ class RecipeInfoFragment : Fragment() {
     private var _binding: FragmentRecipeInfoBinding? = null
     private var scrollToPosition: Runnable? = null
     private val binding get() = _binding!!
+
+
     private val similarRecipeAdapter by lazy {
         SimilarRecipeAdapter { similarRecipe ->
-            Snackbar.make(binding.root, "${similarRecipe.title}", Snackbar.LENGTH_LONG)
-                .show()
+            val recipeId = similarRecipe.id
+            if (recipeId != null) {
+                viewModel.getRecipeInfo(recipeId)
+                viewModel.getSimilarRecipes(recipeId)
+            }
             binding.recyclerView.removeCallbacks(scrollToPosition)
         }
     }
@@ -67,7 +72,8 @@ class RecipeInfoFragment : Fragment() {
         }
 
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = similarRecipeAdapter
         }
 
@@ -94,20 +100,21 @@ class RecipeInfoFragment : Fragment() {
     private fun handleRecipeInfoResponse(response: Response<Recipe>) {
         when (response) {
             is Response.Loading -> {
-                binding.shimmerLayout.visibility = View.VISIBLE
                 binding.shimmerLayout.startShimmer()
+                binding.shimmerLayout.visibility = View.VISIBLE
+                binding.relativeLayout.visibility = View.GONE
             }
 
             is Response.Success -> {
+                binding.recipe = response.data
                 binding.shimmerLayout.stopShimmer()
                 binding.shimmerLayout.visibility = View.GONE
                 binding.relativeLayout.visibility = View.VISIBLE
-                binding.recipe = response.data
             }
 
             is Response.Error -> {
-                binding.shimmerLayout.visibility = View.GONE
                 binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.visibility = View.GONE
                 Snackbar.make(binding.root, response.message.toString(), Snackbar.LENGTH_LONG)
                     .setAction("Retry") {
                         viewModel.getRecipeInfo(args.id)

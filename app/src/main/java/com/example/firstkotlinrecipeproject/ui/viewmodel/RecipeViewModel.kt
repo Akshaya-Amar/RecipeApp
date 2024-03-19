@@ -31,7 +31,7 @@ class RecipeViewModel @JvmOverloads constructor(
 
     init {
         getRecipes()
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             MyApp.getDataStoreContext().name.collectLatest { username ->
                 _userName.postValue("Welcome, \n $username")
             }
@@ -39,7 +39,7 @@ class RecipeViewModel @JvmOverloads constructor(
     }
 
     fun getRecipes() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val resp = repo.getRecipes()
             _recipeData.postValue(Response.Loading())
             delay(500)
